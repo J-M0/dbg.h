@@ -1,6 +1,8 @@
 #ifndef DBG_H
 #define DBG_H
 
+#ifndef NDEBUG
+
 #include <stdio.h>
 #include <wchar.h>
 
@@ -37,5 +39,12 @@
 		void*: "%p\n" \
 	) \
 )
+
+#else
+
+#define dbgfmt(expr, format) ((void)0)
+#define dbg(expr) ((void)0)
+
+#endif // NDEBUG
 
 #endif // DBG_H

@@ -1,3 +1,4 @@
+#include <wchar.h>
 #include "dbg.h"
 
 int main(void) {
