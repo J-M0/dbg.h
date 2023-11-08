@@ -6,11 +6,8 @@
 #include <stdio.h>
 #include <wchar.h>
 
-#define _dbgstrimpl(x) #x
-#define _dbgstr(x) _dbgstrimpl(x)
-
 #define _dbgimpl(expr, format) do { \
-	fputs("[dbg] "__FILE__":"_dbgstr(__LINE__)": "_dbgstr(expr)" = ", stderr); \
+	fprintf(stderr, "[dbg] "__FILE__":%d: "#expr" = ", __LINE__); \
 	fprintf(stderr, (format), (expr)); \
 } while(0)
 
