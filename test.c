@@ -47,7 +47,5 @@ int main(void) {
 	dbg(point.x);
 	dbg(point.y);
 
-	dbgfmt(1 + 1, %Lf);
-
 	return 0;
 }
