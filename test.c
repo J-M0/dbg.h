@@ -1,7 +1,11 @@
+#include <stdbool.h>
 #include <wchar.h>
 #include "dbg.h"
 
 int main(void) {
+	bool b = true;
+	dbg(b);
+
 	signed char sc = 1;
 	dbg(sc);
 	short s = 2;
