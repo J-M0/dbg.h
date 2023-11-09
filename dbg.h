@@ -15,6 +15,9 @@
 		_Bool: dbg_bool_impl_(expr), \
 		default: dbg_impl_(expr, _Generic((expr), \
 			_Bool: 0, /* not used, just make the compiler happy */ \
+			\
+			char: "%c\n", \
+			\
 			signed char: "%hhd\n", \
 			short: "%hd\n", \
 			int: "%d\n", \

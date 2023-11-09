@@ -6,6 +6,9 @@ int main(void) {
 	bool b = true;
 	dbg(b);
 
+	char c = 'c';
+	dbg(c);
+
 	signed char sc = 1;
 	dbg(sc);
 	short s = 2;
