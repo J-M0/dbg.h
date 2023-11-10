@@ -6,40 +6,85 @@
 #include <stdio.h>
 #include <wchar.h>
 
-#define dbg_impl_(expr, format) (fprintf(stderr, "[dbg] "__FILE__":%d: "#expr" = ", __LINE__), fprintf(stderr, (format), (expr)))
-#define dbg_bool_impl_(expr) fprintf(stderr, "[dbg] "__FILE__":%d: "#expr" = %s\n", __LINE__, (expr) ? "true" : "false")
+#define dbg_gen_(func_name, type, fmt) \
+static inline type dbg_ ## func_name ## _(char const* file, int line, char const* expr, type value) { \
+	fprintf(stderr, "[dbg] %s:%d: %s = "#fmt"\n", file, line, expr, value); \
+	return value; \
+}
 
-#define dbgfmt(expr, format) dbg_impl_(expr, #format"\n")
+#define dbg_gen_1_(type, fmt) dbg_gen_(type, type, fmt)
+#define dbg_gen_2_(t1, t2, fmt) dbg_gen_(t1 ## _ ## t2, t1 t2, fmt)
+#define dbg_gen_3_(t1, t2, t3, fmt) dbg_gen_(t1 ## _ ## t2 ## _ ## t3, t1 t2 t3, fmt)
+
+#define dbg_gen_p_(func_name, type, fmt) \
+static inline type* dbg_ ## func_name ## _p_(char const* file, int line, char const* expr, type* value) { \
+	fprintf(stderr, "[dbg] %s:%d: %s = "#fmt"\n", file, line, expr, value); \
+	return value; \
+}
+
+#define dbg_gen_p_1_(type, fmt) dbg_gen_p_(type, type, fmt)
+
+static inline _Bool dbg__Bool_(char const* file, int line, char const* expr, _Bool value) {
+	fprintf(stderr, "[dbg] %s:%d: %s = %s\n", file, line, expr, value ? "true" : "false");
+	return value;
+}
+
+dbg_gen_1_(char, %c)
+
+dbg_gen_2_(signed, char, %hhd)
+dbg_gen_1_(short, %hd)
+dbg_gen_1_(int, %d)
+dbg_gen_1_(long, %ld)
+dbg_gen_2_(long, long, %lld)
+
+dbg_gen_2_(unsigned, char, %hhu)
+dbg_gen_2_(unsigned, short, %hu)
+dbg_gen_2_(unsigned, int, %u)
+dbg_gen_2_(unsigned, long, %lu)
+dbg_gen_3_(unsigned, long, long, %llu)
+
+dbg_gen_1_(float, %f)
+dbg_gen_1_(double, %f)
+dbg_gen_2_(long, double, %Lf)
+
+dbg_gen_p_1_(char, %s)
+dbg_gen_p_1_(wchar_t, %ls)
+dbg_gen_p_1_(void, %p)
+
+#undef dbg_gen_
+#undef dbg_gen_1_
+#undef dbg_gen_2_
+#undef dbg_gen_3_
+#undef dbg_gen_p_
+#undef dbg_gen_p_1_
+
+#define dbgfmt(expr, format) do { fprintf(stderr, "[dbg] "__FILE__":%d: "#expr" = "#format"\n", __LINE__, (expr)); } while(0)
 
 #define dbg(expr) _Generic((expr), \
-		_Bool: dbg_bool_impl_(expr), \
-		default: dbg_impl_(expr, _Generic((expr), \
-			_Bool: 0, /* not used, just make the compiler happy */ \
-			\
-			char: "%c\n", \
-			\
-			signed char: "%hhd\n", \
-			short: "%hd\n", \
-			int: "%d\n", \
-			long: "%ld\n", \
-			long long: "%lld\n", \
-			\
-			unsigned char: "%hhu\n", \
-			unsigned short: "%hu\n", \
-			unsigned int: "%u\n", \
-			unsigned long: "%lu\n", \
-			unsigned long long: "%llu\n", \
-			\
-			float: "%f\n", \
-			double: "%f\n", \
-			long double: "%Lf\n", \
-			\
-			char*: "%s\n", \
-			wchar_t*: "%ls\n", \
-			void*: "%p\n" \
-		) \
-	) \
-)
+		_Bool: dbg__Bool_, \
+		\
+		char: dbg_char_, \
+		\
+		signed char: dbg_signed_char_, \
+		short: dbg_short_, \
+		int: dbg_int_, \
+		long: dbg_long_, \
+		long long: dbg_long_long_, \
+		\
+		unsigned char: dbg_unsigned_char_, \
+		unsigned short: dbg_unsigned_short_, \
+		unsigned int: dbg_unsigned_int_, \
+		unsigned long: dbg_unsigned_long_, \
+		unsigned long long: dbg_unsigned_long_long_, \
+		\
+		float: dbg_float_,\
+		double: dbg_double_,\
+		long double: dbg_long_double_,\
+		\
+		char*: dbg_char_p_, \
+		wchar_t*: dbg_wchar_t_p_, \
+		void*: dbg_void_p_ \
+	) (__FILE__, __LINE__, #expr, (expr))
 
 #else
 

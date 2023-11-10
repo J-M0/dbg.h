@@ -1,4 +1,5 @@
 #include <stdbool.h>
+#include <stdlib.h>
 #include <wchar.h>
 #include "dbg.h"
 
@@ -49,6 +50,13 @@ int main(void) {
 
 	dbg(point.x);
 	dbg(point.y);
+
+	void* vp2 = dbg(malloc(sizeof(char[10])));
+	dbg(vp2);
+	free(vp2);
+
+	i = dbg(2 + 4);
+	dbg(i);
 
 	return 0;
 }
