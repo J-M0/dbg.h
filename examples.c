@@ -16,6 +16,8 @@ int main(void) {
 	eputs("Characters:");
 	char c = 'c';
 	dbg(c);
+	wchar_t wc = 'd';
+	dbgfmt(wc, %lc);
 	eputs("");
 
 	eputs("Signed ints:");
@@ -60,6 +62,7 @@ int main(void) {
 	dbg(wp);
 	void* vp = cp;
 	dbg(vp);
+	dbg(NULL);
 	eputs("");
 
 	struct { int x; int y; } point = {100, 200};
