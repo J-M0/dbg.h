@@ -58,8 +58,10 @@ dbg_gen_p_1_(void, %p)
 #undef dbg_gen_p_
 #undef dbg_gen_p_1_
 
+/// Print the result of an expression to stderr using a format specifier
 #define dbgfmt(expr, format) do { fprintf(stderr, "[dbg] "__FILE__":%d: "#expr" = "#format"\n", __LINE__, (expr)); } while(0)
 
+/// Print the result of an expression to stderr and return it
 #define dbg(expr) _Generic((expr), \
 		_Bool: dbg__Bool_, \
 		\
