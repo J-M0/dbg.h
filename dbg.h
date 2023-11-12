@@ -27,7 +27,7 @@ static inline type dbg_ ## func_name ## _(char const* file, int line, char const
 
 dbg_gen_1_var_(_Bool, %s, value ? "true" : "false")
 
-dbg_gen_1_(char, %c)
+dbg_gen_1_(char, '%c')
 
 dbg_gen_2_(signed, char, %hhd)
 dbg_gen_1_(short, %hd)
