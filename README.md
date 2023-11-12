@@ -21,10 +21,7 @@ int b = dbg(a * 2) + 1; // prints: [dbg] main.c:1: a * 2 = 4
 
 ## dbgfmt()
 
-`dbgfmt()` works similarly to `dbg()` with two differences:
-
-1. You can choose the format specifier to print the result with
-2. It does ***not*** return the result of its expression (this might change in a later version)
+`dbgfmt()` works in the same way as `dbg()` except that you can choose the format specifier to print the result with.
 
 ```c
 // since wchar_t is just a typedef for some kind of integer type,

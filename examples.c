@@ -19,6 +19,8 @@ int main(void) {
 	dbg(c);
 	wchar_t wc = L'd';
 	dbgfmt(wc, L'%lc');
+	wc = dbgfmt(wc + 1, L'%c');
+	dbgfmt(wc, L'%lc');
 	eputs("");
 
 	eputs("Signed ints:");

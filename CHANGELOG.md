@@ -1,3 +1,6 @@
+# 0.7.0
+* `dbgfmt()` can now return the result of its expression just like `dbg()`
+
 # 0.6.0
 * Add support for complex numbers
 * `char`s are now printed with single quotes
