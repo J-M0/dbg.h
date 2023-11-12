@@ -84,8 +84,8 @@ dbg_gen_p_1_(void, %p)
 
 #else
 
-#define dbgfmt(expr, format) ((void)0)
-#define dbg(expr) ((void)0)
+#define dbgfmt(expr, format) (expr)
+#define dbg(expr) (expr)
 
 #endif // NDEBUG
 
