@@ -33,7 +33,7 @@ int b = dbg(a * 2) + 1; // prints: [dbg] main.c:1: a * 2 = 4
 wchar_t wc = L'a';
 
 dbg(wc); // prints: [dbg] main.c:6: wc = 97
-dbgfmt(wc, %lc); // prints: [dbg] main.c:7: wc = a
+dbgfmt(wc, L'%lc'); // prints: [dbg] main.c:7: wc = L'a'
 
 // control float precision
 dbgfmt(0.1 * 0.2, %.2f) // prints [dbg] main.c:10: 0.1 * 0.2 = 0.02 

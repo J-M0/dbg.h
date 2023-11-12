@@ -17,8 +17,8 @@ int main(void) {
 	eputs("Characters:");
 	char c = 'c';
 	dbg(c);
-	wchar_t wc = 'd';
-	dbgfmt(wc, %lc);
+	wchar_t wc = L'd';
+	dbgfmt(wc, L'%lc');
 	eputs("");
 
 	eputs("Signed ints:");
