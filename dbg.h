@@ -8,7 +8,9 @@
 
 #define dbg_gen_(func_name, type, fmt) \
 static inline type dbg_ ## func_name ## _(char const* file, int line, char const* expr, type value) { \
-	fprintf(stderr, "[dbg] %s:%d: %s = "#fmt"\n", file, line, expr, value); \
+	fprintf(stderr, "[dbg] %s:%d: %s = "#fmt"\n", file, line, expr, _Generic(value, \
+	                                                                         _Bool: value ? "true" : "false", \
+	                                                                         default: value)); \
 	return value; \
 }
 
@@ -18,10 +20,7 @@ static inline type dbg_ ## func_name ## _(char const* file, int line, char const
 
 #define dbg_gen_p_1_(type, fmt) dbg_gen_(type ## _p, type*, fmt)
 
-static inline _Bool dbg__Bool_(char const* file, int line, char const* expr, _Bool value) {
-	fprintf(stderr, "[dbg] %s:%d: %s = %s\n", file, line, expr, value ? "true" : "false");
-	return value;
-}
+dbg_gen_1_(_Bool, %s)
 
 dbg_gen_1_(char, %c)
 
