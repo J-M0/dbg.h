@@ -1,3 +1,6 @@
+# 0.6.0
+* Add support for complex numbers
+
 # 0.5.1
 * Fix a bug where macros were not properly disabled under `NDEBUG`
 * Code cleanup and consolidation

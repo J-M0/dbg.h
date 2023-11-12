@@ -22,6 +22,9 @@ static inline type dbg_ ## func_name ## _(char const* file, int line, char const
 
 #define dbg_gen_p_1_(type, fmt) dbg_gen_(type ## _p, type*, fmt, value)
 
+#define dbg_gen_complex_1_(type, fmt) dbg_gen_2_var_(type, _Complex, fmt, ((type*)&value)[0], ((type*)&value)[1])
+#define dbg_gen_complex_2_(t1, t2, fmt) dbg_gen_3_var_(t1, t2, _Complex, fmt, ((t1 t2*)&value)[0], ((t1 t2*)&value)[1])
+
 dbg_gen_1_var_(_Bool, %s, value ? "true" : "false")
 
 dbg_gen_1_(char, %c)
@@ -46,12 +49,19 @@ dbg_gen_p_1_(char, %s)
 dbg_gen_p_1_(wchar_t, %ls)
 dbg_gen_p_1_(void, %p)
 
+dbg_gen_complex_1_(float, %f%+fi)
+dbg_gen_complex_1_(double, %f%+fi)
+dbg_gen_complex_2_(long, double, %Lf%+Lfi)
+
 #undef dbg_gen_
 #undef dbg_gen_1_
 #undef dbg_gen_2_
 #undef dbg_gen_3_
 #undef dbg_gen_p_
 #undef dbg_gen_p_1_
+#undef dbg_gen_complex_1_
+#undef dbg_gen_complex_2_
+
 
 /// Print the result of an expression to stderr using a format specifier
 #define dbgfmt(expr, format) fprintf(stderr, "[dbg] "__FILE__":%d: "#expr" = "#format"\n", __LINE__, (expr))
@@ -77,6 +87,10 @@ dbg_gen_p_1_(void, %p)
 		float: dbg_float_,\
 		double: dbg_double_,\
 		long double: dbg_long_double_,\
+		\
+		float _Complex: dbg_float__Complex_, \
+		double _Complex: dbg_double__Complex_, \
+		long double _Complex: dbg_long_double__Complex_, \
 		\
 		char*: dbg_char_p_, \
 		wchar_t*: dbg_wchar_t_p_, \

@@ -1,3 +1,4 @@
+#include <complex.h>
 #include <stdbool.h>
 #include <stdlib.h>
 #include <wchar.h>
@@ -80,6 +81,17 @@ int main(void) {
 	eputs("");
 	dbg(i = 2 + 4);
 	dbg(i);
+	eputs("");
+
+	eputs("Complex numbers:");
+	dbg(I);
+	float complex fc = CMPLXF(1.0, -1.0);
+	dbg(fc);
+	double complex dc = CMPLX(2.0, -2.0);
+	dbg(dc);
+	long double complex ldc = CMPLXL(3.0, -3.0);
+	dbg(ldc);
+	eputs("");
 
 	return 0;
 }
