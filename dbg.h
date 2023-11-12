@@ -6,8 +6,15 @@
 #include <stdio.h>
 #include <wchar.h>
 
+#ifdef DBG_INTERNAL_DEBUG
+#define dbg_debug_type_(type) fprintf(stderr, "[dbg_internal] type is "#type"\n")
+#else
+#define dbg_debug_type_(type) ((void)0)
+#endif
+
 #define dbg_gen_(func_name, type, fmt, ...) \
 static inline type dbg_ ## func_name ## _(char const* file, int line, char const* expr, type value) { \
+	dbg_debug_type_(type); \
 	fprintf(stderr, "[dbg] %s:%d: %s = "#fmt"\n", file, line, expr, __VA_ARGS__); \
 	return value; \
 }
@@ -61,6 +68,7 @@ dbg_gen_complex_2_(long, double, %Lf%+Lfi)
 #undef dbg_gen_p_1_
 #undef dbg_gen_complex_1_
 #undef dbg_gen_complex_2_
+#undef dbg_debug_type_
 
 
 /// Print the result of an expression to stderr using a format specifier
