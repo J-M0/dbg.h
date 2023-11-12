@@ -1,8 +1,6 @@
 #ifndef DBG_H
 #define DBG_H
 
-#ifndef NDEBUG
-
 #include <stdio.h>
 #include <wchar.h>
 
@@ -111,12 +109,5 @@ dbg_gen_complex_2_(long, double, %Lf%+Lfi)
 
 /// Print the result of an expression to stderr and return it
 #define dbg(expr) dbg_generic_(expr) (__FILE__, __LINE__, NULL, #expr, (expr))
-
-#else
-
-#define dbgfmt(expr, format) (expr)
-#define dbg(expr) (expr)
-
-#endif // NDEBUG
 
 #endif // DBG_H

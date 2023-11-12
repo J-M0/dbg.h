@@ -1,8 +1,8 @@
 # dbg.h: super simple print debugging
 
-`dbg.h` is a header-only library for quick and dirty print debugging. It contains two macros inspired by Rust's [`dbg!`](https://doc.rust-lang.org/std/macro.dbg.html) macro: `dbg()` and `dbgfmt()`. They can be enabled or disabled like `assert` by defining `NDEBUG`.
+`dbg.h` is a header-only library for quick and dirty print debugging. It contains two macros inspired by Rust's [`dbg!`](https://doc.rust-lang.org/std/macro.dbg.html) macro: `dbg()` and `dbgfmt()`.
 
-These macros are intentionally simple and are meant as a debugging aid. Find a real logging library if you need more featureful logging.
+These macros are intentionally simple and are meant as a debugging aid. They probably shouldn't hang around in your code for a long time outside of tests and the like. Find a real logging library if you need more featureful logging.
 
 ## dbg()
 

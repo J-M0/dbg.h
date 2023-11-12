@@ -1,5 +1,6 @@
 # 0.7.0
 * `dbgfmt()` can now return the result of its expression just like `dbg()`
+* Macros can no longer be disabled with `NDEBUG` to be more in line with `dbg!`'s philosophy
 
 # 0.6.0
 * Add support for complex numbers
