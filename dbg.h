@@ -6,21 +6,23 @@
 #include <stdio.h>
 #include <wchar.h>
 
-#define dbg_gen_(func_name, type, fmt) \
+#define dbg_gen_(func_name, type, fmt, ...) \
 static inline type dbg_ ## func_name ## _(char const* file, int line, char const* expr, type value) { \
-	fprintf(stderr, "[dbg] %s:%d: %s = "#fmt"\n", file, line, expr, _Generic(value, \
-	                                                                         _Bool: value ? "true" : "false", \
-	                                                                         default: value)); \
+	fprintf(stderr, "[dbg] %s:%d: %s = "#fmt"\n", file, line, expr, __VA_ARGS__); \
 	return value; \
 }
 
-#define dbg_gen_1_(type, fmt) dbg_gen_(type, type, fmt)
-#define dbg_gen_2_(t1, t2, fmt) dbg_gen_(t1 ## _ ## t2, t1 t2, fmt)
-#define dbg_gen_3_(t1, t2, t3, fmt) dbg_gen_(t1 ## _ ## t2 ## _ ## t3, t1 t2 t3, fmt)
+#define dbg_gen_1_var_(type, fmt, ...) dbg_gen_(type, type, fmt, __VA_ARGS__)
+#define dbg_gen_2_var_(t1, t2, fmt, ...) dbg_gen_(t1 ## _ ## t2, t1 t2, fmt, __VA_ARGS__)
+#define dbg_gen_3_var_(t1, t2, t3, fmt, ...) dbg_gen_(t1 ## _ ## t2 ## _ ## t3, t1 t2 t3, fmt, __VA_ARGS__)
 
-#define dbg_gen_p_1_(type, fmt) dbg_gen_(type ## _p, type*, fmt)
+#define dbg_gen_1_(type, fmt) dbg_gen_1_var_(type, fmt, value)
+#define dbg_gen_2_(t1, t2, fmt) dbg_gen_2_var_(t1, t2, fmt, value)
+#define dbg_gen_3_(t1, t2, t3, fmt) dbg_gen_3_var_(t1, t2, t3, fmt, value)
 
-dbg_gen_1_(_Bool, %s)
+#define dbg_gen_p_1_(type, fmt) dbg_gen_(type ## _p, type*, fmt, value)
+
+dbg_gen_1_var_(_Bool, %s, value ? "true" : "false")
 
 dbg_gen_1_(char, %c)
 
