@@ -1,3 +1,14 @@
+/* SPDX-License-Identifier: MPL-2.0 */
+
+/*
+ * dbg.h v0.7.0: Quick and dirty print debuging
+ * Copyright (C) 2023 James Morris
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
+
 #ifndef DBG_H
 #define DBG_H
 
