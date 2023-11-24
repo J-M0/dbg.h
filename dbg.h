@@ -12,8 +12,8 @@
 #ifndef DBG_H
 #define DBG_H
 
+#include <stddef.h>
 #include <stdio.h>
-#include <wchar.h>
 
 #ifdef DBG_INTERNAL_DEBUG
 #define dbg_debug_type_(type) fprintf(stderr, "[dbg_internal] type is "#type"\n")
