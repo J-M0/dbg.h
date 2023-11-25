@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: MPL-2.0 */
 
-/*
+/** @file
  * dbg.h v0.7.0: Quick and dirty print debuging
  * Copyright (C) 2023 James Morris
  *
@@ -115,10 +115,17 @@ dbg_gen_complex_2_(long, double, %Lf%+Lfi)
 	void*: dbg_void_p_ \
 )
 
-/// Print the result of an expression to stderr using a format specifier and return it
+/**
+ * Print the result of an expression to stderr using a format specifier and return it
+ * @param expr the expression to print
+ * @param format a printf format specifier
+ */
 #define dbgfmt(expr, format) dbg_generic_(expr) (__FILE__, __LINE__, #format, #expr, (expr))
 
-/// Print the result of an expression to stderr and return it
+/**
+ * Print the result of an expression to stderr and return it
+ * @param expr the expression to print
+ */
 #define dbg(expr) dbg_generic_(expr) (__FILE__, __LINE__, NULL, #expr, (expr))
 
 #endif // DBG_H
