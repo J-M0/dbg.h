@@ -76,10 +76,12 @@ dbg_gen_complex_1_(double, %f%+fi)
 dbg_gen_complex_2_(long, double, %Lf%+Lfi)
 
 #undef dbg_gen_
+#undef dbg_gen_1_var_
+#undef dbg_gen_2_var_
+#undef dbg_gen_3_var_
 #undef dbg_gen_1_
 #undef dbg_gen_2_
 #undef dbg_gen_3_
-#undef dbg_gen_p_
 #undef dbg_gen_p_1_
 #undef dbg_gen_complex_1_
 #undef dbg_gen_complex_2_
