@@ -16,14 +16,14 @@
 #include <stdio.h>
 
 #ifdef DBG_INTERNAL_DEBUG
-#define dbg_debug_type_(type) fprintf(stderr, "[dbg_internal] type is "#type"\n")
+#define DBG_INTERNAL_DEBUG_TYPE(T) fputs("[dbg_internal] type is "#T"\n", stderr)
 #else
-#define dbg_debug_type_(type) ((void)0)
+#define DBG_INTERNAL_DEBUG_TYPE(T) ((void)0)
 #endif
 
-#define dbg_gen_(func_name, type, default_fmt, ...) \
-static inline type dbg_ ## func_name ## _(char const* file, int line, char const* format, char const* expr, type value) { \
-	dbg_debug_type_(type); \
+#define DBG_INTERNAL_MAKE(func_name, T, default_fmt, ...) \
+static inline T dbg_internal_ ## func_name (char const* file, int line, char const* format, char const* expr, T value) { \
+	DBG_INTERNAL_DEBUG_TYPE(T); \
 	fprintf(stderr, "[dbg] %s:%d: %s = ", file, line, expr); \
 	if (!format) { \
 		fprintf(stderr, #default_fmt"\n", __VA_ARGS__); \
@@ -34,87 +34,87 @@ static inline type dbg_ ## func_name ## _(char const* file, int line, char const
 	return value; \
 }
 
-#define dbg_gen_1_var_(type, default_fmt, ...) dbg_gen_(type, type, default_fmt, __VA_ARGS__)
-#define dbg_gen_2_var_(t1, t2, default_fmt, ...) dbg_gen_(t1 ## _ ## t2, t1 t2, default_fmt, __VA_ARGS__)
-#define dbg_gen_3_var_(t1, t2, t3, default_fmt, ...) dbg_gen_(t1 ## _ ## t2 ## _ ## t3, t1 t2 t3, default_fmt, __VA_ARGS__)
+#define DBG_INTERNAL_MAKE_1_VAR(T, default_fmt, ...) DBG_INTERNAL_MAKE(T, T, default_fmt, __VA_ARGS__)
+#define DBG_INTERNAL_MAKE_2_VAR(T1, T2, default_fmt, ...) DBG_INTERNAL_MAKE(T1 ## _ ## T2, T1 T2, default_fmt, __VA_ARGS__)
+#define DBG_INTERNAL_MAKE_3_VAR(T1, T2, T3, default_fmt, ...) DBG_INTERNAL_MAKE(T1 ## _ ## T2 ## _ ## T3, T1 T2 T3, default_fmt, __VA_ARGS__)
 
-#define dbg_gen_1_(type, default_fmt) dbg_gen_1_var_(type, default_fmt, value)
-#define dbg_gen_2_(t1, t2, default_fmt) dbg_gen_2_var_(t1, t2, default_fmt, value)
-#define dbg_gen_3_(t1, t2, t3, default_fmt) dbg_gen_3_var_(t1, t2, t3, default_fmt, value)
+#define DBG_INTERNAL_MAKE_1(T, default_fmt) DBG_INTERNAL_MAKE_1_VAR(T, default_fmt, value)
+#define DBG_INTERNAL_MAKE_2(T1, T2, default_fmt) DBG_INTERNAL_MAKE_2_VAR(T1, T2, default_fmt, value)
+#define DBG_INTERNAL_MAKE_3(T1, T2, T3, default_fmt) DBG_INTERNAL_MAKE_3_VAR(T1, T2, T3, default_fmt, value)
 
-#define dbg_gen_p_1_(type, default_fmt) dbg_gen_(type ## _p, type*, default_fmt, value)
+#define DBG_INTERNAL_MAKE_P_1(T, default_fmt) DBG_INTERNAL_MAKE(T ## _p, T*, default_fmt, value)
 
-#define dbg_gen_complex_1_(type, default_fmt) dbg_gen_2_var_(type, _Complex, default_fmt, ((type*)&value)[0], ((type*)&value)[1])
-#define dbg_gen_complex_2_(t1, t2, default_fmt) dbg_gen_3_var_(t1, t2, _Complex, default_fmt, ((t1 t2*)&value)[0], ((t1 t2*)&value)[1])
+#define DBG_INTERNAL_MAKE_COMPLEX_1(T, default_fmt) DBG_INTERNAL_MAKE_2_VAR(T, _Complex, default_fmt, ((T*)&value)[0], ((T*)&value)[1])
+#define DBG_INTERNAL_MAKE_COMPLEX_2(T1, T2, default_fmt) DBG_INTERNAL_MAKE_3_VAR(T1, T2, _Complex, default_fmt, ((T1 T2*)&value)[0], ((T1 T2*)&value)[1])
 
-dbg_gen_1_var_(_Bool, %s, value ? "true" : "false")
+DBG_INTERNAL_MAKE_1_VAR(_Bool, %s, value ? "true" : "false")
 
-dbg_gen_1_(char, '%c')
+DBG_INTERNAL_MAKE_1(char, '%c')
 
-dbg_gen_2_(signed, char, %hhd)
-dbg_gen_1_(short, %hd)
-dbg_gen_1_(int, %d)
-dbg_gen_1_(long, %ld)
-dbg_gen_2_(long, long, %lld)
+DBG_INTERNAL_MAKE_2(signed, char, %hhd)
+DBG_INTERNAL_MAKE_1(short, %hd)
+DBG_INTERNAL_MAKE_1(int, %d)
+DBG_INTERNAL_MAKE_1(long, %ld)
+DBG_INTERNAL_MAKE_2(long, long, %lld)
 
-dbg_gen_2_(unsigned, char, %hhu)
-dbg_gen_2_(unsigned, short, %hu)
-dbg_gen_2_(unsigned, int, %u)
-dbg_gen_2_(unsigned, long, %lu)
-dbg_gen_3_(unsigned, long, long, %llu)
+DBG_INTERNAL_MAKE_2(unsigned, char, %hhu)
+DBG_INTERNAL_MAKE_2(unsigned, short, %hu)
+DBG_INTERNAL_MAKE_2(unsigned, int, %u)
+DBG_INTERNAL_MAKE_2(unsigned, long, %lu)
+DBG_INTERNAL_MAKE_3(unsigned, long, long, %llu)
 
-dbg_gen_1_(float, %f)
-dbg_gen_1_(double, %f)
-dbg_gen_2_(long, double, %Lf)
+DBG_INTERNAL_MAKE_1(float, %f)
+DBG_INTERNAL_MAKE_1(double, %f)
+DBG_INTERNAL_MAKE_2(long, double, %Lf)
 
-dbg_gen_p_1_(char, %s)
-dbg_gen_p_1_(wchar_t, %ls)
-dbg_gen_p_1_(void, %p)
+DBG_INTERNAL_MAKE_P_1(char, %s)
+DBG_INTERNAL_MAKE_P_1(wchar_t, %ls)
+DBG_INTERNAL_MAKE_P_1(void, %p)
 
-dbg_gen_complex_1_(float, %f%+fi)
-dbg_gen_complex_1_(double, %f%+fi)
-dbg_gen_complex_2_(long, double, %Lf%+Lfi)
+DBG_INTERNAL_MAKE_COMPLEX_1(float, %f%+fi)
+DBG_INTERNAL_MAKE_COMPLEX_1(double, %f%+fi)
+DBG_INTERNAL_MAKE_COMPLEX_2(long, double, %Lf%+Lfi)
 
-#undef dbg_gen_
-#undef dbg_gen_1_var_
-#undef dbg_gen_2_var_
-#undef dbg_gen_3_var_
-#undef dbg_gen_1_
-#undef dbg_gen_2_
-#undef dbg_gen_3_
-#undef dbg_gen_p_1_
-#undef dbg_gen_complex_1_
-#undef dbg_gen_complex_2_
-#undef dbg_debug_type_
+#undef DBG_INTERNAL_MAKE
+#undef DBG_INTERNAL_MAKE_1_VAR
+#undef DBG_INTERNAL_MAKE_2_VAR
+#undef DBG_INTERNAL_MAKE_3_VAR
+#undef DBG_INTERNAL_MAKE_1
+#undef DBG_INTERNAL_MAKE_2
+#undef DBG_INTERNAL_MAKE_3
+#undef DBG_INTERNAL_MAKE_P_1
+#undef DBG_INTERNAL_MAKE_COMPLEX_1
+#undef DBG_INTERNAL_MAKE_COMPLEX_2
+#undef DBG_INTERNAL_DEBUG_TYPE
 
-#define dbg_generic_(expr) _Generic((expr), \
-	_Bool: dbg__Bool_, \
+#define DBG_INTERNAL_GENERIC(expr) _Generic((expr), \
+	_Bool: dbg_internal__Bool, \
 	\
-	char: dbg_char_, \
+	char: dbg_internal_char, \
 	\
-	signed char: dbg_signed_char_, \
-	short: dbg_short_, \
-	int: dbg_int_, \
-	long: dbg_long_, \
-	long long: dbg_long_long_, \
+	signed char: dbg_internal_signed_char, \
+	short: dbg_internal_short, \
+	int: dbg_internal_int, \
+	long: dbg_internal_long, \
+	long long: dbg_internal_long_long, \
 	\
-	unsigned char: dbg_unsigned_char_, \
-	unsigned short: dbg_unsigned_short_, \
-	unsigned int: dbg_unsigned_int_, \
-	unsigned long: dbg_unsigned_long_, \
-	unsigned long long: dbg_unsigned_long_long_, \
+	unsigned char: dbg_internal_unsigned_char, \
+	unsigned short: dbg_internal_unsigned_short, \
+	unsigned int: dbg_internal_unsigned_int, \
+	unsigned long: dbg_internal_unsigned_long, \
+	unsigned long long: dbg_internal_unsigned_long_long, \
 	\
-	float: dbg_float_,\
-	double: dbg_double_,\
-	long double: dbg_long_double_,\
+	float: dbg_internal_float,\
+	double: dbg_internal_double,\
+	long double: dbg_internal_long_double,\
 	\
-	float _Complex: dbg_float__Complex_, \
-	double _Complex: dbg_double__Complex_, \
-	long double _Complex: dbg_long_double__Complex_, \
+	float _Complex: dbg_internal_float__Complex, \
+	double _Complex: dbg_internal_double__Complex, \
+	long double _Complex: dbg_internal_long_double__Complex, \
 	\
-	char*: dbg_char_p_, \
-	wchar_t*: dbg_wchar_t_p_, \
-	void*: dbg_void_p_ \
+	char*: dbg_internal_char_p, \
+	wchar_t*: dbg_internal_wchar_t_p, \
+	void*: dbg_internal_void_p \
 )
 
 /**
@@ -122,12 +122,12 @@ dbg_gen_complex_2_(long, double, %Lf%+Lfi)
  * @param expr the expression to print
  * @param format a printf format specifier
  */
-#define dbgfmt(expr, format) dbg_generic_(expr) (__FILE__, __LINE__, #format, #expr, (expr))
+#define dbgfmt(expr, format) DBG_INTERNAL_GENERIC(expr) (__FILE__, __LINE__, #format, #expr, (expr))
 
 /**
  * Print the result of an expression to stderr and return it
  * @param expr the expression to print
  */
-#define dbg(expr) dbg_generic_(expr) (__FILE__, __LINE__, NULL, #expr, (expr))
+#define dbg(expr) DBG_INTERNAL_GENERIC(expr) (__FILE__, __LINE__, NULL, #expr, (expr))
 
 #endif // DBG_H
