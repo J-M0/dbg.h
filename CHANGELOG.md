@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.8.0
+* Support for `char const*`, `wchar_t const*`, and `void const*` types
+* Internal code reorganization
+
 ## 0.7.0
 * `dbgfmt()` can now return the result of its expression just like `dbg()`
 * Macros can no longer be disabled with `NDEBUG` to be more in line with `dbg!`'s philosophy
