@@ -43,6 +43,7 @@ static inline T dbg_internal_ ## func_name (char const* file, int line, char con
 #define DBG_INTERNAL_MAKE_3(T1, T2, T3, default_fmt) DBG_INTERNAL_MAKE_3_VAR(T1, T2, T3, default_fmt, value)
 
 #define DBG_INTERNAL_MAKE_P_1(T, default_fmt) DBG_INTERNAL_MAKE(T ## _p, T*, default_fmt, value)
+#define DBG_INTERNAL_MAKE_P_2(T1, T2, default_fmt) DBG_INTERNAL_MAKE(T1 ## _ ## T2 ## _p, T1 T2*, default_fmt, value)
 
 #define DBG_INTERNAL_MAKE_COMPLEX_1(T, default_fmt) DBG_INTERNAL_MAKE_2_VAR(T, _Complex, default_fmt, ((T*)&value)[0], ((T*)&value)[1])
 #define DBG_INTERNAL_MAKE_COMPLEX_2(T1, T2, default_fmt) DBG_INTERNAL_MAKE_3_VAR(T1, T2, _Complex, default_fmt, ((T1 T2*)&value)[0], ((T1 T2*)&value)[1])
@@ -70,6 +71,10 @@ DBG_INTERNAL_MAKE_2(long, double, %Lf)
 DBG_INTERNAL_MAKE_P_1(char, %s)
 DBG_INTERNAL_MAKE_P_1(wchar_t, %ls)
 DBG_INTERNAL_MAKE_P_1(void, %p)
+
+DBG_INTERNAL_MAKE_P_2(char, const, %s)
+DBG_INTERNAL_MAKE_P_2(wchar_t, const, %ls)
+DBG_INTERNAL_MAKE_P_2(void, const, %p)
 
 DBG_INTERNAL_MAKE_COMPLEX_1(float, %f%+fi)
 DBG_INTERNAL_MAKE_COMPLEX_1(double, %f%+fi)
@@ -111,6 +116,10 @@ DBG_INTERNAL_MAKE_COMPLEX_2(long, double, %Lf%+Lfi)
 	float _Complex: dbg_internal_float__Complex, \
 	double _Complex: dbg_internal_double__Complex, \
 	long double _Complex: dbg_internal_long_double__Complex, \
+	\
+	char const*: dbg_internal_char_const_p, \
+	wchar_t const*: dbg_internal_wchar_t_const_p, \
+	void const*: dbg_internal_void_const_p, \
 	\
 	char*: dbg_internal_char_p, \
 	wchar_t*: dbg_internal_wchar_t_p, \

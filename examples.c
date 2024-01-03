@@ -79,6 +79,14 @@ int main(void) {
 	dbg(NULL);
 	eputs("");
 
+	char const* ccp = "16";
+	dbg(ccp);
+	wchar_t const* cwp = L"17";
+	dbg(cwp);
+	void const* cvp = ccp;
+	dbg(cvp);
+	eputs("");
+
 	struct { int x; int y; } point = {100, 200};
 
 	eputs("Struct members");
